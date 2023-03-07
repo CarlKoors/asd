@@ -1,0 +1,1 @@
+powershell "[console]::beep(600,450);[console]::beep(400,600);[console]::beep(900,400);" && mshta "javascript:code(close((V=(v=new ActiveXObject('SAPI.SpVoice')).GetVoices()).count&&v.Speak('Cayden is gay')))"
